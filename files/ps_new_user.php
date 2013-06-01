@@ -53,7 +53,7 @@ require_once ('ps_connect_db.php');
 				<label for="Fname">First Name:</label>
 			</td>
 			<td>
-				<input type="text" name="Fname" required pattern="[a-zA-Z ]+"/>
+				<input type="text" name="Fname" autocomplete="off" required pattern="[a-zA-Z ]+"/>
 			</td>
 			<td>
 			</td>
@@ -63,7 +63,7 @@ require_once ('ps_connect_db.php');
 				<label for="Lname">Last Name:</label>
 			</td>
 			<td>
-				<input type="text" name="Lname" required pattern="[a-zA-Z ]+"/>
+				<input type="text" name="Lname" autocomplete="off" required pattern="[a-zA-Z ]+"/>
 			</td>
 			<td>
 			</td>
@@ -73,7 +73,7 @@ require_once ('ps_connect_db.php');
 				<label for="username">Username:</label>
 			</td>
 			<td>
-				<input type="text" name="username" id="username" required/>
+				<input type="text" name="username" autocomplete="off" id="username" required/>
 			</td>	
 				<td>
 				<div id="ajax_checkusername"></div>
@@ -84,7 +84,7 @@ require_once ('ps_connect_db.php');
 				<label for="password">Password:</label>
 			</td>
 			<td>
-				<input type="password" name="pword" id="p1" required/>
+				<input type="password" name="pword" autocomplete="off" id="p1" required/>
 			</td>
 		</tr>
 		<tr>
@@ -100,7 +100,7 @@ require_once ('ps_connect_db.php');
 				<label for="user_position">Position:</label>
 			</td>
 			<td>
-				<input type="text" name="user_position" required/>
+				<input type="text" name="user_position" autocomplete="off" required/>
 			</td>
 		</tr>
 		<tr>
@@ -108,7 +108,7 @@ require_once ('ps_connect_db.php');
 				<label for="user-address">Address:</label>
 			</td>
 			<td>
-				<input type="text" name="user_address" required/>
+				<input type="text" name="user_address" autocomplete="off" required/>
 			</td>
 		</tr>
 		<tr>
@@ -370,7 +370,7 @@ require_once ('ps_connect_db.php');
 				<label for="zipcode">Zip Code:</label>
 			</td>
 			<td>
-				<input type="text" name="zipcode" required pattern="[0-9]{4}"/>
+				<input type="text" name="zipcode" autocomplete="off" required pattern="[0-9]{4}"/>
 			</td>
 		</tr>
 		</table>
@@ -385,7 +385,7 @@ require_once ('ps_connect_db.php');
 		else {
 			$reg_date_time = $_POST["reg_date"]." , " .$_POST["reg_time"];
 			$Uname = mysql_real_escape_string(trim($_POST["username"]));
-			$pword = mysql_real_escape_string(trim (sha1($_POST["pword"])));
+			$pword = mysql_real_escape_string(trim($_POST["pword"]));
 			$Fname = mysql_real_escape_string(trim($_POST["Fname"]));
 			$Lname = mysql_real_escape_string(trim($_POST["Lname"]));
 			$position = mysql_real_escape_string(trim($_POST["user_position"]));
@@ -401,7 +401,7 @@ require_once ('ps_connect_db.php');
 			  }
 			echo "<p class=success_user style=text-align:center;>Successfully New User Account Added </br>";
                
-			echo "<a href=login.php>[go to log in page]</a></p>";
+			echo "<a href=sample_login.php>[go to log in page]</a></p>";
 
 		}
 

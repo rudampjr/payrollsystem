@@ -19,7 +19,13 @@ require_once 'ps_connect_db.php'
 </header>
 <div id="content-admin-profile">
 	<div id="employee_info">
+
+
+
 		<form action="#" method="post">
+
+
+
 
 		<?php
 
@@ -39,13 +45,13 @@ while($row = mysqli_fetch_array($result))
 	<tr>
 	  <td>First Name:</td>
 	 <?php
-	  echo "<td>" . $row['firstname'] . "</td>";
+	  echo "<td style=font-weight:bold;>" . $row['firstname'] . "</td>";
 	  ?>
 	</tr>
 	<tr>
 	  <td>Last Name:</td>
 	 <?php
-	  echo "<td>" . $row['lastname'] . "</td>";
+	  echo "<td style=font-weight:bold;>" . $row['lastname'] . "</td>";
 	  ?>
 	</tr>
 	<tr>
@@ -80,6 +86,47 @@ while($row = mysqli_fetch_array($result))
 
 
 <!--FORM-->
+
+<!--FILE UPLOAD-->
+
+	<?php 
+mysql_select_db('seg_dbtest',mysql_connect('localhost','root','','seg_dbtest'))or die(mysql_error());
+?>
+
+  <?php
+if (isset($_POST['submit'])) {
+
+    $image = addslashes(file_get_contents($_FILES['image']['tmp_name']));
+    $image_name = addslashes($_FILES['image']['name']);
+    $image_size = getimagesize($_FILES['image']['tmp_name']);
+
+    move_uploaded_file($_FILES["image"]["tmp_name"], "ps_files/user_img/" . $_FILES["image"]["name"]);
+    $location = "ps_files/user_img/" . $_FILES["image"]["name"];
+
+    mysql_query("INSERT INTO seg_ps_users (image)
+values ('$location')                                    
+") or die(mysql_error());
+    echo "success";
+    header('location:ps_admin_profile.php');
+}
+?>
+
+
+
+
+<?php 
+	 $query=mysql_query("SELECT * from seg_ps_users")or die(mysql_error());
+	 while($row=mysql_fetch_array($query)){
+	 ?>
+	 
+    
+	 <div id="upload_img">
+    <img src="<?php echo $row['image']; ?>" width="150" height="150" alt="user" class="img-rounded img-polaroid">
+</div>
+
+	<?php 
+	}
+	?>
 		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" ENCTYPE="multipart/form-data" >
 			<input type="file" name="image" id="file" required />
 			<input class="btn btn-info btn-small upload_btn" type="submit" value="Upload" name="submit" />
@@ -97,53 +144,6 @@ while($row = mysqli_fetch_array($result))
 
 
 
-
-<!--FILE UPLOAD-->
-<?php 
-
-	 $query=mysql_query("SELECT * FROM image_upload")or die(mysql_error());
-	 while($row=mysql_fetch_array($query)){
-	 ?>
-	 
-    <img src="<?php echo $row['image']; ?>" width="100" height="100" alt="" class="img-rounded img-polaroid" />
-
-	
-
-  <?php
-
-if (isset($_POST['submit'])) {
-    $image = addslashes(file_get_contents($_FILES['image']['tmp_name']));
-    $image_name = addslashes($_FILES['image']['name']);
-    $image_size = getimagesize($_FILES['image']['tmp_name']);
-    $location = $_POST['image'];
-
-    if (file_exists("/ps_files/user_img/" . $_FILES["image"]["name"]))
-      {
-      echo $_FILES["image"]["name"] . " already exists. ";
-      }
-    else
-      {
-      move_uploaded_file($_FILES["image"]["tmp_name"],
-      "/ps_files/user_img/" . $_FILES["image"]["name"]);
-      echo "Stored in: " . "/ps_files/user_img/" . $_FILES["image"]["name"];
-      }
-
-
-
-
-		$sql_user = "INSERT INTO image_upload(image)
-			VALUES ('$location')";
-			if (!mysqli_query($con,$sql_user))
-			  {
-			  die('Error: ' . mysqli_error($con));
-			  }
-			echo "Image Added </br>";
-}
-?>
-
-<?php 
-	}
-	?>
 
 
 <!--Page Generated-->

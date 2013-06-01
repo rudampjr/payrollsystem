@@ -12,6 +12,7 @@ require_once('ps_connect_db.php');
 <link href="ps_includes/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
 <link rel="stylesheet" type="text/css" href="ps_theme/css/new_user.css"/>
 <script type="text/javascript" src="ps_theme/js/jquery-1.9.1.min.js"></script>
+<link href="ps_includes/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="ps_includes/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
@@ -45,7 +46,7 @@ require_once('ps_connect_db.php');
 				<label for="Fname">First Name:</label>
 			</td>
 			<td>
-				<input type="text" name="Fname" required pattern="[a-zA-Z ]+"/>
+				<input type="text" name="Fname" required pattern="[a-zA-Z ]+" autocomplete="off" />
 			</td>
 			<td>
 			</td>
@@ -55,7 +56,7 @@ require_once('ps_connect_db.php');
 				<label for="Lname">Last Name:</label>
 			</td>
 			<td>
-				<input type="text" name="Lname" required pattern="[a-zA-Z ]+"/>
+				<input type="text" name="Lname" autocomplete="off" required pattern="[a-zA-Z ]+"/>
 			</td>
 			<td>
 			</td>
@@ -65,7 +66,7 @@ require_once('ps_connect_db.php');
 				<label for="username">Username:</label>
 			</td>
 			<td>
-				<input type="text" name="username" id="username" required/>
+				<input type="text" name="username" id="username" required autocomplete="off"/>
 			</td>	
 				<td>
 				<div id="ajax_checkusername"></div>
@@ -76,7 +77,7 @@ require_once('ps_connect_db.php');
 				<label for="password">Password:</label>
 			</td>
 			<td>
-				<input type="password" name="pword" id="p1" required/>
+				<input type="password" name="pword" id="p1" required autocomplete="off"/>
 			</td>
 		</tr>
 		<tr>
@@ -84,7 +85,7 @@ require_once('ps_connect_db.php');
 				<label for="password">Confirm Password:</label>
 			</td>
 			<td>
-				<input type="password" name="ConfirnmPword" onfocus="validatePass(document.getElementById('p1'), this);" oninput="validatePass(document.getElementById('p1'), this);" required />
+				<input type="password" name="ConfirnmPword" onfocus="validatePass(document.getElementById('p1'), this);" oninput="validatePass(document.getElementById('p1'), this);" required autocomplete="off"/>
 			</td>
 		</tr>
 		<tr>
@@ -92,7 +93,7 @@ require_once('ps_connect_db.php');
 				<label for="user_position">Position:</label>
 			</td>
 			<td>
-				<input type="text" name="user_position" required/>
+				<input type="text" name="user_position" required autocomplete="off"/>
 			</td>
 		</tr>
 		<tr>
@@ -100,7 +101,7 @@ require_once('ps_connect_db.php');
 				<label for="user-address">Address:</label>
 			</td>
 			<td>
-				<input type="text" name="user_address" required/>
+				<input type="text" name="user_address" required autocomplete="off"/>
 			</td>
 		</tr>
 		<tr>
@@ -362,7 +363,7 @@ require_once('ps_connect_db.php');
 				<label for="zipcode">Zip Code:</label>
 			</td>
 			<td>
-				<input type="text" name="zipcode" required pattern="[0-9]{4}"/>
+				<input type="text" name="zipcode" autocomplete="off" required pattern="[0-9]{4}"/>
 			</td>
 		</tr>
 		</table>
@@ -372,43 +373,31 @@ require_once('ps_connect_db.php');
 		</div>
 	</form>
 	<?php 
-		} // end if
-		else {
-			$reg_date_time = $_POST["reg_date"]." , " .$_POST["reg_time"];
-			$Uname = mysql_real_escape_string(trim($_POST["username"]));
-			$pword = mysql_real_escape_string(trim (sha1($_POST["pword"])));
-			$Fname = mysql_real_escape_string(trim($_POST["Fname"]));
-			$Lname = mysql_real_escape_string(trim($_POST["Lname"]));
-			$position = mysql_real_escape_string(trim($_POST["user_position"]));
-			$address = mysql_real_escape_string(trim($_POST["user_address"]));
-			$country = mysql_real_escape_string(trim($_POST["user_country"]));
-			$zipcode = mysql_real_escape_string(trim($_POST["zipcode"]));
+          } // end if
+          else {
+               $reg_date_time = $_POST["reg_date"]." , " .$_POST["reg_time"];
+               $Uname = mysql_real_escape_string(trim($_POST["username"]));
+               $pword = mysql_real_escape_string(trim($_POST["pword"]));
+               $Fname = mysql_real_escape_string(trim($_POST["Fname"]));
+               $Lname = mysql_real_escape_string(trim($_POST["Lname"]));
+               $position = mysql_real_escape_string(trim($_POST["user_position"]));
+               $address = mysql_real_escape_string(trim($_POST["user_address"]));
+               $country = mysql_real_escape_string(trim($_POST["user_country"]));
+               $zipcode = mysql_real_escape_string(trim($_POST["zipcode"]));
 
-			$sql_user = "INSERT INTO seg_ps_users (reg_date_time, username, password, firstname, lastname, position, address, country, zipcode)
-			VALUES ('$reg_date_time', '$Uname', '$pword', '$Fname', '$Lname', '$position', '$address', '$country' , '$zipcode')";
-			if (!mysqli_query($con,$sql_user))
-			  {
-			  die('Error: ' . mysqli_error($con));
-			  }
-			echo "Successfully New User Account Added </br>";
+               $sql_user = "INSERT INTO seg_ps_users (reg_date_time, username, password, firstname, lastname, position, address, country, zipcode)
+               VALUES ('$reg_date_time', '$Uname', '$pword', '$Fname', '$Lname', '$position', '$address', '$country' , '$zipcode')";
+               if (!mysqli_query($con,$sql_user))
+                 {
+                 die('Error: ' . mysqli_error($con));
+                 }
+               echo "<p class=success_user style=text-align:center;>Successfully New User Account Added </br>";
                
-			echo "<a href=ps_add_newuser.php>[back to register again]</a>";
+               echo "<a href=ps_add_newuser.php style=text-align:center;margin-top:10px;>[back to add new user]</a></p>";
 
-		}
+          }
 
-	?>
-</div>
-</div>
-<div class="clear"></div>
-<!--Page Generated-->
-<?php $start_time = microtime(true);
-$time_gen = number_format(microtime(true) - $start_time, 9);
-?>
-
-<pre class="prettyprint" id="page=generated" style="width: 90%; clear: both; margin: 0 auto; margin-bottom: 20px;">
- This page was generated in <span class="atv"><?php echo"$time_gen"; ?>
-</span> seconds.
-</pre>
+     ?>
 
 <!--Confirm Password-->
 
@@ -422,49 +411,60 @@ p2.setCustomValidity('');
 }
 </script>
 
-<!--validator-->
+
+     <!--validator-->
 
 <script type="text/javascript">
 
 $(document).ready(function(){
 
-	$('#username').keyup(function(){
+     $('#username').keyup(function(){
 
-		$('#ajax_checkusername').html('<img src="ps_theme/images/ajax-loader_s.gif" />')
-		var check_username = $(this).val();
-		var data_checkusername = "username=" + check_username ;
-		if ( check_username  == null || check_username == ""){
-        	$("#ajax_checkusername").html('');
-        	
+          $('#ajax_checkusername').html('<img src="ps_theme/images/ajax-loader_s.gif" />')
+          var check_username = $(this).val();
+          var data_checkusername = "username=" + check_username ;
+          if ( check_username  == null || check_username == ""){
+          $("#ajax_checkusername").html('');
+          
 
-      	} else{
+          } else{
 
-      		$.ajax({
-		        type:"POST",
-		        url:"ps_theme/ajax/ps_ajax_check_username.php",
-		        data:data_checkusername,
-		        success:function(data){
-		        	if (data == 0) {
-		        		$('#ajax_checkusername').html('<img src="ps_theme/images/icon-ok.jpg" />');
+               $.ajax({
+                  type:"POST",
+                  url:"ps_theme/ajax/ps_ajax_check_username.php",
+                  data:data_checkusername,
+                  success:function(data){
+                    if (data == 0) {
+                         $('#ajax_checkusername').html('<img src="ps_theme/images/icon-ok.jpg" />');
                          $('#submit_btn_adduser').attr('disabled',false);
 
-		        	}else {
-		        		$('#ajax_checkusername').html('<img src="ps_theme/images/icon-x.jpg" />');
+                    }else {
+                         $('#ajax_checkusername').html('<img src="ps_theme/images/icon-x.jpg" />');
 
                               $('#submit_btn_adduser').attr('disabled',true);
 
-		        	};
-		            
-		        }
-		     });
+                    };
+                      
+                  }
+               });
 
-      	} // end else
-	});
+          } // end else
+     });
 
 }); // end document
 
 </script>
 
+<!--Page Generated-->
+<?php $start_time = microtime(true);
+$time_gen = number_format(microtime(true) - $start_time, 9);
+?>
+
+<pre class="prettyprint" id="page=generated" style="width: 200%; clear: both; margin: 0 auto; margin-bottom: 20px;">
+ This page was generated in <span class="atv"><?php echo"$time_gen"; ?>
+</span> seconds.
+</pre>
+<!--upload-->
 </body>
 
 </html>

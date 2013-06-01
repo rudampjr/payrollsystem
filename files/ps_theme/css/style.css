@@ -139,3 +139,11 @@ aside #collapse-menu li img {
 	margin:40px auto;
 	width:800px;
 }
+.user a{
+	font-size: 12px;
+}
+.user{
+	float: right;
+margin-left: 29px;
+margin-top: 6px;
+}

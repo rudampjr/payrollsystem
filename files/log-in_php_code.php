@@ -1,42 +1,43 @@
 <?php
-// Create connection
-require_once 'ps_connect_db.php'
-?> 
+	session_start();
+	include('ps_connect_db2.php');
+	
+	function wash($var) //function used for checking data
+		{
+			if (get_magic_quotes_gpc())
+				{
+					$var=stripslashes($var);
+				}
+			return mysql_real_escape_string ($var);
+		}
+		
+		$user=wash($_POST['psUsername']);
+		$pass=wash($_POST['psPassword']);
 
-
-
-<?php
-
-// Connect to server and select databse.
-mysql_connect("$host", "$username", "$password")or die("cannot connect");
-mysql_select_db("$db_name")or die("cannot select DB");
-
-// username and password sent from form
-$psUsername=$_POST['psUsername'];
-$psPassword=$_POST['psPassword'];
-
-// To protect MySQL injection (more detail about MySQL injection)
-$psUsername = stripslashes($psUsername);
-$psPassword = stripslashes($psPassword);
-$psUsername = mysql_real_escape_string($psUsername);
-$psPassword = mysql_real_escape_string($psPassword);
-
-$sql="SELECT * FROM $tbl_name WHERE username='$psUsername' and password='$psPassword'";
-$result=mysql_query($sql);
-
-// Mysql_num_row is counting table row
-$count=mysql_num_rows($result);
-
-// If result matched $myusername and $mypassword, table row must be 1 row
-
-if($count==1){
-
-// Register $myusername, $mypassword and redirect to file "login_success.php"
-session_register("psUsername");
-session_register("psPassword");
-header("location:login_success.php");
-}
-else {
-echo "Wrong Username or Password";
-}
+		$sql="SELECT * FROM seg_ps_users WHERE username='$user' and password='$pass'"; //sql statement
+		$result=mysql_query($sql); //query
+		
+		if ($result) //fetching  results
+			{
+				if (mysql_num_rows($result) > 0)
+					{
+						session_regenerate_id();
+						$sample=mysql_fetch_assoc($result);
+						$_SESSION['ID']=$sample['id'];
+						$_SESSION['NAME']=$sample['firstname'];
+						session_write_close();
+						header('location: main.php'); //if true you will be redirected to home.php
+						exit();
+					}
+				else
+					{
+//						echo '<b>'.'Incorrect Login Preferences!'.'</b>';
+						header('location: error.php'); //if not you will be redirected to index.php
+						exit();
+					}
+				}
+		else
+			{
+				echo 'Error/s Detected: '.mysql_error(); //used for error purposes
+			}
 ?>
